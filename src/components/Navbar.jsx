@@ -18,6 +18,9 @@ export default function Navbar() {
                 <Link to='/' className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-orange-300 mr-4">
                     Home
                 </Link>
+                <Link to='/products' className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-orange-300 mr-4">
+                    Products
+                </Link>
                 {!user && 
                     <>
                         <Link to='/register' className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-orange-300 mr-4">
@@ -31,10 +34,10 @@ export default function Navbar() {
                 {!!user && 
                     <>  
 
-                       <Link to='/register' className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-orange-300 mr-2">
-                            <img src="https://img.freepik.com/premium-photo/cartoon-girl-with-long-black-hair-wearing-blue-dress-sneakers_1034043-113815.jpg?semt=ais_user_personalization&w=740&q=80" alt="" className='w-10 h-10 rounded-full'/>
-                        </Link>
-                        <Link to='/login' className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-orange-300  mr-4">
+                       <div className="block lg:inline-block mr-2">
+                            <img src="https://img.freepik.com/premium-photo/cartoon-girl-with-long-black-hair-wearing-blue-dress-sneakers_1034043-113815.jpg?semt=ais_user_personalization&w=740&q=80" alt="" className='w-8 h-8 rounded-full'/>
+                        </div>
+                        <Link to='/profile' className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-orange-300  mr-4">
                             {user.username}
                         </Link>
                         <button onClick={() => dispatch(logout())} className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-orange-300">

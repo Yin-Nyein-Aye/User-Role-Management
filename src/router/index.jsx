@@ -5,6 +5,7 @@ import Layout from "../pages/Layout";
 const Home = lazy(() => import("../pages/Home"));
 const Register = lazy(() => import("../pages/Register"));
 const Login = lazy(() => import("../pages/Login"));
+const Products = lazy(() => import("../pages/Products"));
 
 const withSuspense = (Component) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path : "/login",
         element : withSuspense(Login)
+      },
+      {
+        path : "/products",
+        element : withSuspense(Products)
       }
     ]
   },

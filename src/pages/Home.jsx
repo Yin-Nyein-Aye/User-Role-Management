@@ -4,22 +4,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../features/data/dataThunk";
 import Pagination from '../components/Pagination';
 import Card from '../components/Card';
+import { useQuery } from '@tanstack/react-query';
+import { getDataApi } from '../features/data/dataService';
+import { setPage } from '../features/data/dataSlice';
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { items, loading, error, page, limit } = useSelector((state) => state.data);
-  
-  useEffect(() => {
-    const controller = new AbortController();
-    dispatch(fetchData({page,limit,endpoint: "posts",
-    signal: controller.signal
-  }));
+  // const { items, loading, error, page, limit } = useSelector((state) => state.data);
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   dispatch(fetchData({page,limit,endpoint: "posts",
+  //   signal: controller.signal
+  // }));
 
-  return () => { controller.abort(); };
-  }, [dispatch,page,limit]);
-   
-  if (loading) return <p>Loading posts...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  //   return () => { controller.abort(); };
+  // }, [dispatch,page,limit]);
+
+  const { page, limit } = useSelector((state) => state.data);
+  const endpoint = "posts";
+
+  const { data, isLoading, isError, error } = useQuery({ 
+    queryKey: [page, limit, endpoint], 
+    queryFn: () => getDataApi({ page, limit, endpoint }), 
+    keepPreviousData: true, 
+  });
+
+  if (isLoading) return <p>Loading posts...</p>;
+  if (isError) return <p style={{ color: "red" }}>{error.message}</p>;
 
   return (
     <>
@@ -30,15 +41,15 @@ export default function Home() {
           <h1 className='text-white font-bold text-base sm:text-xl md:text-3xl lg:text-5xl'>FRESHY BAKED FOR YOU!</h1>
         </div>
       </div>
-      {!!items && 
+      {!!data.posts && 
       <div className="max-w-screen overflow-hidden rounded shadow-lg">
         <h2 className='text-6xl py-6 font-bold text-center'>Posts</h2>
         <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 m-3'>
-          {items.map((post) => (
+          {data.posts.map((post) => (
             <Card key={post.id} post={post}/>
           ))}
         </ul>
-        <Pagination />
+        <Pagination page={page} total={data.total} limit={limit} onPageChange={(newPage) => dispatch(setPage(newPage))}/>
       </div>}
     </>   
   )

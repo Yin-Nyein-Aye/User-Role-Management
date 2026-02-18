@@ -3,25 +3,36 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../features/data/dataThunk";
 import breadImg from '../assets/bread_home_page.jpg'
 import Pagination from '../components/Pagination';
+import { useQuery } from "@tanstack/react-query";
+import { getDataApi } from "../features/data/dataService";
+import { setPage } from "../features/data/dataSlice";
 
 export default function Products() {
     const dispatch = useDispatch();
-    const { items, loading, error, page,limit } = useSelector((state) => state.data);
+    const {page,limit } = useSelector((state) => state.data);
+
+    const endpoint = "products";
+
+    const { data, isLoading, isError, error } = useQuery({ 
+      queryKey: [page, limit, endpoint], 
+      queryFn: () => getDataApi({ page, limit, endpoint }), 
+      keepPreviousData: true, 
+    });
 
     useEffect(() => {
         dispatch(fetchData({page,limit,endpoint: "products"}));
     }, [dispatch,page,limit]);
     
-    if (loading) return <p>Loading posts...</p>;
-    if (error) return <p style={{ color: "red" }}>{error}</p>;
+    if (isLoading) return <p>Loading posts...</p>;
+    if (isError) return <p style={{ color: "red" }}>{error.message}</p>;
 
     return (
         <>
-             {!!items && 
+             {!!data.products && 
              <div className="max-w-screen overflow-hidden rounded shadow-lg">
                <h2 className='text-6xl py-6 font-bold text-center'>Products</h2>
                <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 m-3'>
-                 {items.map((post) => (
+                 {data.products.map((post) => (
                    <li key={post.id}>
                      <img className="w-full" src={breadImg} alt="Sunset in the mountains" />
                      <div className="px-6 py-4">
@@ -33,7 +44,7 @@ export default function Products() {
                    </li>
                  ))}
                </ul>               
-               <Pagination />
+               <Pagination page={page} total={data.total} limit={limit} onPageChange={(newPage) => dispatch(setPage(newPage))} />
              </div>}
         </>  
     )

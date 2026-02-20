@@ -2,7 +2,6 @@ import React from "react";
 import breadImg from '../assets/homepage1.jpg'
 
 function Card({post}) {
-    console.log("Card rendered:", post.id);
     return (
         <li>
             <img className="w-full" src={breadImg} alt="Sunset in the mountains" />

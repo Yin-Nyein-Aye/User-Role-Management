@@ -1,4 +1,4 @@
-import api from "../../services/api.js";
+import api from "../../services/api";
 import { GetDataParams, PaginatedResponse } from "../../types/dataParams.ts"
 
 //redux
@@ -15,8 +15,6 @@ import { GetDataParams, PaginatedResponse } from "../../types/dataParams.ts"
 //   }
 // };
 
-
-
 //react query
 export const getDataApi = async<T>({
   endpoint, 
@@ -26,7 +24,6 @@ export const getDataApi = async<T>({
   sortBy = null,
   order = "asc",
 }:GetDataParams):  Promise<PaginatedResponse<T>> => {
-
   const skip = (page - 1) * limit;
   const params = {
     limit,
@@ -40,15 +37,46 @@ export const getDataApi = async<T>({
   }
 
   try {
-    const res = await api.get(`/${endpoint}`, {params});
-    return res.data;
+  const res = await api.get(`/${endpoint}`, {params});
+  return res.data;
   } catch (error) {
     console.error("API fetch error:", error);
     throw error;
   }
 }
 
-export const getDataByIdApi = async (id) => {
-  const res = await api.get(`/posts/${id}`);
+export const createItem = async <T>(
+  endpoint : string,
+  data: Partial<T>
+): Promise<T> => {
+  const res = await api.post(`/${endpoint}/add`, data);
+  console.log("API response:", res.data); // 👈 log the response
   return res.data;
 };
+
+export const updateItem = async <T> (
+  endpoint : string,
+  id: number,
+  data: Partial<T>
+): Promise<T> => {
+  const res = await api.put(`/${endpoint}/${id}`, data);
+  return res.data;
+};
+
+
+// export const deleteItem = async (
+//   endpoint : string,
+//   id: number
+// ): Promise<void> => {
+//   await api.delete(`/${endpoint}/${id}`);
+// };
+
+export const deleteItem = async <T>(
+  endpoint: string,
+  id: number
+): Promise<T> => {
+  const res = await api.delete(`/${endpoint}/${id}`);
+  console.log("Delete API response:", res.data);
+  return res.data; 
+};
+

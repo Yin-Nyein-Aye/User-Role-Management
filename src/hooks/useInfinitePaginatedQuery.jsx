@@ -26,7 +26,6 @@ export const useInfinitePaginatedQuery = ({
 
         return nextPage <= totalPages ? nextPage : undefined;
         },
-
         staleTime: 1000 * 60 * 5,
     });
 };

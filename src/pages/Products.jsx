@@ -3,23 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../features/data/dataThunk";
 import breadImg from '../assets/bread_home_page.jpg'
 import Pagination from '../components/Pagination';
-import { useQuery } from "@tanstack/react-query";
-import { getDataApi } from "../features/data/dataService";
 import { setPage } from "../features/data/dataSlice";
 import { usePaginatedQuery } from "../hooks/usePaginatedQuery";
 
 export default function Products() {
     const dispatch = useDispatch();
     const {page,limit } = useSelector((state) => state.data);
-
-    // const endpoint = "products";
-
-    // const { data, isLoading, isError, error } = useQuery({ 
-    //   queryKey: [page, limit, endpoint], 
-    //   queryFn: () => getDataApi({ page, limit, endpoint }), 
-    //   keepPreviousData: true, 
-    // });
-
     const { data, isLoading, isError, error } =
       usePaginatedQuery({
         endpoint: "products",
@@ -29,7 +18,6 @@ export default function Products() {
         sortBy: "title",
         order: "asc"
       });
-
 
     useEffect(() => {
         dispatch(fetchData({page,limit,endpoint: "products"}));

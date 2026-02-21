@@ -1,6 +1,6 @@
 // dataSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchData, fetchDataById } from "./dataThunk";
+import { fetchData } from "./dataThunk";
 
 const initialState = {
   items: [],

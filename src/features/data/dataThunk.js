@@ -1,6 +1,6 @@
 // postThunk.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getDataApi, getDataByIdApi } from "./dataService";
+import { getDataApi } from "./dataService";
 
 export const fetchData = createAsyncThunk(
   "data/fetchAll",
@@ -13,18 +13,6 @@ export const fetchData = createAsyncThunk(
         return rejectWithValue("Request canceled"); 
       } 
       return rejectWithValue(err.response?.data || "Failed to fetch data");
-    }
-  }
-);
-
-export const fetchDataById = createAsyncThunk(
-  "posts/fetchById",
-  async (id, { rejectWithValue }) => {
-    try {
-      const data = await getDataByIdApi(id);
-      return data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data || "Failed to fetch post");
     }
   }
 );

@@ -63,7 +63,6 @@ export const updateItem = async <T> (
   return res.data;
 };
 
-
 // export const deleteItem = async (
 //   endpoint : string,
 //   id: number

@@ -4,51 +4,13 @@ import { Product } from "@/types/product";
 
 export const useCreateData = <T>(endpoint: string) => {
     const queryClient = useQueryClient();
-    console.log("useCreateData hook mounted");
-
-
-    // return useMutation({
-    //     mutationFn: (newData: Partial<any>) => createItem(endpoint, newData),
-
-    //     onMutate: async (newData) => {
-    //     await queryClient.cancelQueries({ queryKey: [endpoint] });
-
-    //     const previousData = queryClient.getQueryData([endpoint]);
-
-    //     queryClient.setQueryData([endpoint],(old: any) => {
-    //         if (!old) return old;
-
-    //         return {
-    //             ...old,
-    //            [endpoint]: [ 
-    //             { id: Date.now(), ...newData } as T,
-    //             ...old[endpoint], 
-    //             ], 
-    //         }; 
-    //     });
-
-    //     return { previousData };
-    //     },
-
-    //     onError: (_err, _newData, context) => {
-    //         if (context?.previousData) { 
-    //             queryClient.setQueryData([endpoint], context.previousData); 
-    //         } 
-    //     }, 
-    //     onSettled: () => { 
-    //         queryClient.invalidateQueries({ 
-    //             queryKey: [endpoint] 
-    //         }); 
-    //     }, 
-    // }); 
     return useMutation({ 
         mutationFn: (payload: { id?: number; data: Partial<T> }) => { 
             console.log(payload)
-            if (payload.id) { 
-                return updateItem<T>(endpoint, payload.id, payload.data); 
-            } else { 
-                return createItem<T>(endpoint, payload); 
-            } 
+            if (!payload.id) {
+                return createItem<T>(endpoint, payload);
+            }
+            return updateItem<T>(endpoint, payload.id, payload.data);
         }, 
         onMutate: async (payload) => { 
             await queryClient.cancelQueries({ queryKey: [endpoint] }); 

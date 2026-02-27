@@ -1,20 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
-
+import { QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import { useCreateData } from "../hooks/useCreateData";
 import * as dataService from "../features/data/dataService";
 
-// ✅ Mock API functions
 vi.mock("../features/data/dataService", () => ({
   createItem: vi.fn(),
   updateItem: vi.fn(),
 }));
 
-// ✅ Helper to create fresh QueryClient
 const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -36,11 +30,7 @@ describe("useCreateData", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-
-  // ==========================
-  // CREATE
-  // ==========================
-  it("calls createItem when no id is provided", async () => {
+  it("calls createItem to insert new data when no id is provided", async () => {
     const endpoint = "products";
 
     (dataService.createItem as any).mockResolvedValue({});

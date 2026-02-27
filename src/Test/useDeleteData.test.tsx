@@ -1,11 +1,9 @@
-// useDeleteData.test.tsx
 import { describe, it, expect, vi } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, act } from "@testing-library/react";
 import { useDeleteData } from "../hooks/useDeleteData";
 import * as dataService from "../features/data/dataService";
 
-// Mock deleteItem
 vi.spyOn(dataService, "deleteItem").mockImplementation(async (_endpoint, _id) => {
     return Promise.resolve({ success: true });
 });

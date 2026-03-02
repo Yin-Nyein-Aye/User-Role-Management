@@ -86,8 +86,8 @@ describe("useCreateData", () => {
   // UPDATE
   // ==========================
   it("calls updateItem when id is provided", async () => {
-    const endpoint = "products";
-
+    const endpoint = "products";  
+    
     (dataService.updateItem as any).mockResolvedValue({});
 
     const { wrapper } = createWrapper();

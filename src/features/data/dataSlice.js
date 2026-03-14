@@ -4,20 +4,19 @@ import { fetchData } from "./dataThunk";
 
 const initialState = {
   items: [],
-  total : 0,
-  page : 1,
-  limit : 8,
+  total: 0,
+  page: 1,
+  limit: 8,
   selectedPost: null,
   // loading: false,
   // error: null,
 };
-
 const dataSlice = createSlice({
   name: "data",
   initialState,
   reducers: {
-    setPage(state, action) { 
-      state.page = action.payload; 
+    setPage(state, action) {
+      state.page = action.payload;
     },
   },
   // extraReducers: (builder) => {
@@ -27,10 +26,10 @@ const dataSlice = createSlice({
   //       state.error = null;
   //     })
   //     .addCase(fetchData.fulfilled, (state, action) => {
-  //       const { data, endpoint } = action.payload; 
-  //       state.loading = false; 
-  //       state.items = data[endpoint] || data; 
-  //       state.total = data.total; 
+  //       const { data, endpoint } = action.payload;
+  //       state.loading = false;
+  //       state.items = data[endpoint] || data;
+  //       state.total = data.total;
   //       state.limit = data.limit;
   //     })
   //     .addCase(fetchData.rejected, (state, action) => {

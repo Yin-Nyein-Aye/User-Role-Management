@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCreateData } from "../hooks/useCreateData";
 import * as dataService from "../features/data/dataService";
 
@@ -18,9 +18,7 @@ const createWrapper = () => {
   });
 
   const wrapper = ({ children }: any) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
   return { queryClient, wrapper };
@@ -37,10 +35,7 @@ describe("useCreateData", () => {
 
     const { wrapper } = createWrapper();
 
-    const { result } = renderHook(
-      () => useCreateData(endpoint),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useCreateData(endpoint), { wrapper });
 
     await act(async () => {
       result.current.mutate({
@@ -48,10 +43,9 @@ describe("useCreateData", () => {
       });
     });
 
-    expect(dataService.createItem).toHaveBeenCalledWith(
-      endpoint,
-      { data: { name: "New Product" } }
-    );
+    expect(dataService.createItem).toHaveBeenCalledWith(endpoint, {
+      data: { name: "New Product" },
+    });
   });
 
   it("optimistically adds new item to cache", async () => {
@@ -65,10 +59,7 @@ describe("useCreateData", () => {
       products: [{ id: 1, name: "Old" }],
     });
 
-    const { result } = renderHook(
-      () => useCreateData(endpoint),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useCreateData(endpoint), { wrapper });
 
     await act(async () => {
       result.current.mutate({
@@ -86,16 +77,13 @@ describe("useCreateData", () => {
   // UPDATE
   // ==========================
   it("calls updateItem when id is provided", async () => {
-    const endpoint = "products";  
-    
+    const endpoint = "products";
+
     (dataService.updateItem as any).mockResolvedValue({});
 
     const { wrapper } = createWrapper();
 
-    const { result } = renderHook(
-      () => useCreateData(endpoint),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useCreateData(endpoint), { wrapper });
 
     await act(async () => {
       result.current.mutate({
@@ -104,11 +92,9 @@ describe("useCreateData", () => {
       });
     });
 
-    expect(dataService.updateItem).toHaveBeenCalledWith(
-      endpoint,
-      1,
-      { name: "Updated" }
-    );
+    expect(dataService.updateItem).toHaveBeenCalledWith(endpoint, 1, {
+      name: "Updated",
+    });
   });
 
   it("optimistically updates item in cache", async () => {
@@ -125,10 +111,7 @@ describe("useCreateData", () => {
       ],
     });
 
-    const { result } = renderHook(
-      () => useCreateData(endpoint),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useCreateData(endpoint), { wrapper });
 
     await act(async () => {
       result.current.mutate({
@@ -148,9 +131,7 @@ describe("useCreateData", () => {
   it("restores previous data on error", async () => {
     const endpoint = "products";
 
-    (dataService.createItem as any).mockRejectedValue(
-      new Error("Failed")
-    );
+    (dataService.createItem as any).mockRejectedValue(new Error("Failed"));
 
     const { queryClient, wrapper } = createWrapper();
 
@@ -158,10 +139,7 @@ describe("useCreateData", () => {
       products: [{ id: 1, name: "Old" }],
     });
 
-    const { result } = renderHook(
-      () => useCreateData(endpoint),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useCreateData(endpoint), { wrapper });
 
     await act(async () => {
       result.current.mutate({

@@ -8,16 +8,16 @@ export interface GetDataParams {
 }
 
 export interface PaginatedResponse<T> {
-  total: number;      // total items in backend
-  skip: number;       // how many items skipped
-  limit: number;      // items per page
-  posts?: T[];        // array of items (Post, Product, etc.)
+  total: number; // total items in backend
+  skip: number; // how many items skipped
+  limit: number; // items per page
+  posts?: T[]; // array of items (Post, Product, etc.)
 }
 
 export interface Post {
   id: number;
   title: string;
-  description: string;
+  body: string;
 }
 
 export interface Product {
